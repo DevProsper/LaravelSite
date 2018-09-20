@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-            <p>Please wait...</p>
+            <p>Chargement...</p>
         </div>
     </div>
     <!-- #END# Page Loader -->
