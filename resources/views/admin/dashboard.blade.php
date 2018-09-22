@@ -313,3 +313,7 @@
         </div>
     </div>
 @endsection
+
+@section('js')
+    <script src="{{ asset('assets/backend/js/pages/tables/jquery-datatable.js') }}"></script>
+@endsection

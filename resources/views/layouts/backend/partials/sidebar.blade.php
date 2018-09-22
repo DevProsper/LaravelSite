@@ -18,7 +18,7 @@
                         <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                            <i class="material-icons">input</i> Déconnection
+                            <i class="material-icons">input</i> Deconnection
                         </a>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -41,6 +41,14 @@
                         <span>Accueil</span>
                     </a>
                 </li>
+
+                <li class="{{ Request::is('admin/tag*') ? 'active' : '' }}">
+                    <a href="{{route('admin.tag.index')}}">
+                        <i class="material-icons">label</i>
+                        <span>Gestion de Tag</span>
+                    </a>
+                </li>
+
                 <li class="header">Systeme</li>
                 <li>
                     <a class="dropdown-item" href="{{ route('logout') }}"

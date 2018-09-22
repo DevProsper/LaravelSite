@@ -13,12 +13,14 @@
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 
-
     <!-- Stylesheets -->
 
     <link href="{{ asset('assets/frontend/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/frontend/css/swiper.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/frontend/css/ionicons.css') }}" rel="stylesheet">
+
+    <!-- Librairie Toast -->
+    <script src="{{ asset('assets/toast/toastr.min.css') }} "></script>
 
     @yield('css')
 </head>
@@ -40,5 +42,9 @@
 <script src="{{ asset('assets/frontend/js/scripts.js') }}"></script>
 
 @yield('js')
+
+        <!-- Librairie Toast -->
+<script src="{{ asset('assets/toast/toastr.min.js') }} "></script>
+{!! Toastr::message() !!}
 </body>
 </html>

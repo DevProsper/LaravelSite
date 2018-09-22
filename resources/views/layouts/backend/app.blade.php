@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
@@ -21,6 +21,8 @@
     <!-- Waves Effect Css -->
     <link href="{{ asset('assets/backend/plugins/node-waves/waves.css') }}" rel="stylesheet" />
 
+    @yield('css')
+
     <!-- Animation Css -->
     <link href="{{ asset('assets/backend/plugins/animate-css/animate.css') }}" rel="stylesheet" />
 
@@ -31,8 +33,18 @@
     <link href="{{ asset('assets/backend/css/style.css') }}" rel="stylesheet" />
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="" rel="stylesheet" />
     <link href="{{ asset('assets/backend/css/themes/all-themes.css') }}" rel="stylesheet" />
+
+    <!-- Librairie Toast -->
+    <link href="{{ asset('assets/toast/toastr.min.css') }}" rel="stylesheet" />
+
+
+
+    <script src=""></script>
+    <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+
+
 
 </head>
 <body class="theme-blue">
@@ -68,7 +80,7 @@
     </div>
     <!-- #END# Search Bar -->
     <!-- Top Bar -->
-        @include('layouts.backend.partials.topbar')
+    @include('layouts.backend.partials.topbar')
     <!-- #Top Bar -->
     <section>
         <!-- #END# Left Sidebar -->
@@ -92,11 +104,18 @@
     <!-- Slimscroll Plugin Js -->
     <script src="{{ asset('assets/backend/plugins/jquery-slimscroll/jquery.slimscroll.js') }} "></script>
 
+
     <!-- Waves Effect Plugin Js -->
     <script src="{{ asset('assets/backend/plugins/node-waves/waves.js') }} "></script>
 
+    <!-- Custom Js -->
+    <script src="{{ asset('assets/backend/js/admin.js') }} "></script>
+
     <!-- Jquery CountTo Plugin Js -->
     <script src="{{ asset('assets/backend/plugins/jquery-countto/jquery.countTo.js') }} "></script>
+
+    <script src="{{ asset('assets/backend/js/pages/index.js') }} "></script>
+
 
     <!-- Morris Plugin Js -->
     <script src="{{ asset('assets/backend/plugins/raphael/raphael.min.js') }} "></script>
@@ -117,12 +136,28 @@
     <!-- Sparkline Chart Plugin Js -->
     <script src="{{ asset('assets/backend/plugins/jquery-sparkline/jquery.sparkline.js') }} "></script>
 
-    <!-- Custom Js -->
-    <script src=""></script>
-    <script src="{{ asset('assets/backend/js/admin.js') }} "></script>
-    <script src="{{ asset('assets/backend/js/pages/index.js') }} "></script>
+
 
     <!-- Demo Js -->
     <script src="{{ asset('assets/backend/js/demo.js') }} "></script>
+
+    <!-- Librairie Toast -->
+    <script src="{{ asset('assets/toast/toastr.min.js') }} "></script>
+    {!! Toastr::message() !!}
+
+            <!-- Librairie Toast -->
+
+
+    @yield('js')
+    <script type="text/javascript">
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}}', 'Error', {
+                    closeButton:true,
+                    progessBar:true
+                });
+            @endforeach
+        @endif
+    </script>
 </body>
 </html>
