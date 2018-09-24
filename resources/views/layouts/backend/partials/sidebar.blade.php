@@ -49,6 +49,13 @@
                     </a>
                 </li>
 
+                <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
+                    <a href="{{route('admin.categories.index')}}">
+                        <i class="material-icons">label</i>
+                        <span>Gestion des categories</span>
+                    </a>
+                </li>
+
                 <li class="header">Systeme</li>
                 <li>
                     <a class="dropdown-item" href="{{ route('logout') }}"

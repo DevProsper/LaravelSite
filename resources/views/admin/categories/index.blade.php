@@ -9,9 +9,9 @@
 @section('content')
 <div class="container-fluid">
     <div class="block-header">
-        <a class="btn btn-primary btn-lg waves-effect" href="{{ route('admin.tag.create') }}" title="">
+        <a class="btn btn-primary btn-lg waves-effect" href="{{ route('admin.categories.create') }}" title="">
             <i class="material-icons">add</i>
-            <span>Nouveau Tag</span>
+            <span>Nouvelle Categorie</span>
         </a>
     </div>
     <!-- Exportable Table -->
@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="header">
                     <h2>
-                        LISTE DES TAGS
+                        LISTE DES CATEGORIES
                     </h2>
                     <ul class="header-dropdown m-r--5">
                         <li class="dropdown">
@@ -57,17 +57,17 @@
                             </tfoot>
                             <tbody>
                                 <tbody>
-                                    @foreach($tags as $key=>$tag)
+                                    @foreach($categories as $key=>$category)
                                     <tr>
                                         <td>{{ $key +1 * 40 }}</td>
-                                        <td>{{ $tag->name  }}</td>
-                                        <td>{{ $tag->created_at }}</td>
-                                        <td>{{ $tag->updated_at }}</td>
+                                        <td>{{ $category->name  }}</td>
+                                        <td>{{ $category->created_at }}</td>
+                                        <td>{{ $category->updated_at }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.tag.edit', $tag->id) }}" class="btn btn-info waves-effect">
+                                            <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-info waves-effect">
                                                 <i class="material-icons">edit</i>
                                             </a>
-                                            <form action="{{ route('admin.tag.destroy', [$tag->id]) }}" method="POST">
+                                            <form action="{{ route('admin.categories.destroy', [$category->id]) }}" method="POST">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                                 <button onclick="return alert('Etes vous sûr de vouloir supprimer ?')" type="submit" class="btn btn-danger waves-effect"> <i class="material-icons">delete</i>
@@ -80,7 +80,7 @@
                                 </tbody>
                             </tbody>
                         </table>
-                        {{ $tags->links() }}
+                        {{ $categories->links() }}
                     </div>
                 </div>
             </div>
