@@ -52,10 +52,8 @@ class CategoryController extends Controller
 
             $currentDate = Carbon::now()->toDateString();
 
-
-
-
             $fullName = $request->file('image')->getClientOriginalName();
+
             $name = pathinfo($fullName, PATHINFO_FILENAME);
             $extension = $request->file('image')->getClientOriginalExtension();
             $image_name = $slug.'-'.$currentDate.'-'.uniqid().'.'.$extension;
@@ -63,27 +61,6 @@ class CategoryController extends Controller
             $path = $request->file('image')->storeAs('public/category', $image_name);
             $path2 = $request->file('image')->storeAs('public/category/slider', $image_name);
         }
-        /*$image = $request->file('image');
-        $slug = str_slug($request->name);
-
-        if(isset($image)){
-            $fullName = $image->getClientOriginalName();
-
-
-            if(!Storage::disk('public')->exists('category')){
-                Storage::disk('public')->makeDirectory('category');
-            }
-
-            $category = Image::make('public/category/'.$image)->resize(1600,479)->save();
-            Storage::disk('public')->put('category/'.$image_name,$category);
-
-            if(!Storage::disk('public')->exists('category/slider')){
-                Storage::disk('public')->makeDirectory('category/slider');
-            }
-
-            $slider = Image::make('public/slider/'.$image)->resize(500,333)->save();
-            Storage::disk('public')->put('category/slider/'.$image_name,$slider);
-        }*/
         else{
             $image_name = 'default.png';
         }

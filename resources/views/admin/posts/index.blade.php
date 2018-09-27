@@ -1,6 +1,6 @@
 @extends('layouts.backend.app')
 
-@section('title', 'Tag')
+@section('title', 'Post')
 @section('css')
 <!-- JQuery DataTable Css -->
 <link href="{{ asset('assets/backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
@@ -9,9 +9,9 @@
 @section('content')
 <div class="container-fluid">
     <div class="block-header">
-        <a class="btn btn-primary btn-lg waves-effect" href="{{ route('admin.tag.create') }}" title="">
+        <a class="btn btn-primary btn-lg waves-effect" href="{{ route('admin.post.create') }}" title="">
             <i class="material-icons">add</i>
-            <span>Nouveau Tag</span>
+            <span>Ajout d'un nouveau post</span>
         </a>
     </div>
     <!-- Exportable Table -->
@@ -20,7 +20,8 @@
             <div class="card">
                 <div class="header">
                     <h2>
-                        LISTE DES TAGS
+                        LISTE DES POSTS
+                        <span class="badge bg-info">{{ $posts->count() }}</span>
                     </h2>
                     <ul class="header-dropdown m-r--5">
                         <li class="dropdown">
@@ -41,7 +42,11 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nom</th>
+                                    <th>Titre</th>
+                                    <th>Autheur</th>
+                                    <th><i class="material-icons">visibility</i></th>
+                                    <th>Approuvé</th>
+                                    <th>Status</th>
                                     <th>Date de création</th>
                                     <th>Date de modification</th>
                                     <th>Action</th>
@@ -50,24 +55,53 @@
                             <tfoot>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nom</th>
+                                    <th>Titre</th>
+                                    <th>Autheur</th>
+                                    <th><i class="material-icons">visibility</i></th>
+                                    <th>Approuvé</th>
+                                    <th>Status</th>
                                     <th>Date de création</th>
+                                    <th>Date de modification</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
                             <tbody>
                                 <tbody>
-                                    @foreach($tags as $key=>$tag)
+                                    @foreach($posts as $key=>$post)
                                     <tr>
                                         <td>{{ $key +1 * 40 }}</td>
-                                        <td>{{ $tag->name  }}</td>
-                                        <td>{{ $tag->created_at }}</td>
-                                        <td>{{ $tag->updated_at }}</td>
+                                        <td>{{ str_limit($post->title, '5')  }}</td>
+                                        <td>{{ $post->user->name  }}</td>
+                                        <td>{{ $post->view_count  }}</td>
+                                        <th>
+                                            @if($post->is_approved == true)
+                                            <span class="badge bg-blue">
+                                                Approuvé
+                                            </span>
+                                            @else
+                                            <span class="badge bg-pink">
+                                                En attente
+                                            </span>
+                                            @endif
+                                        </th>
+                                        <th>
+                                            @if($post->status == true)
+                                            <span class="badge bg-blue">
+                                                Publié
+                                            </span>
+                                            @else
+                                            <span class="badge bg-pink">
+                                                En attente
+                                            </span>
+                                            @endif
+                                        </th>
+                                        <td>{{ $post->created_at }}</td>
+                                        <td>{{ $post->updated_at }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.tag.edit', $tag->id) }}" class="btn btn-info waves-effect">
+                                            <a href="{{ route('admin.post.edit', $post->id) }}" class="btn btn-info waves-effect">
                                                 <i class="material-icons">edit</i>
                                             </a>
-                                            <form action="{{ route('admin.tag.destroy', [$tag->id]) }}" method="POST">
+                                            <form action="{{ route('admin.post.destroy', [$post->id]) }}" method="POST">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                                 <button onclick="return confirm('Etes vous sûr de vouloir supprimer ?')" type="submit" class="btn btn-danger waves-effect"> <i class="material-icons">delete</i>
@@ -80,7 +114,7 @@
                                 </tbody>
                             </tbody>
                         </table>
-                        {{ $tags->links() }}
+                        {{ $posts->links() }}
                     </div>
                 </div>
             </div>
@@ -103,34 +137,5 @@
 
 
 <link href="https://unpkg.com/sweetalert2@7.19.1/dist/sweetalert2.all.js" rel="stylesheet" />
-<script type="text/javascript">
-    /*function deleteTag(id){
-        swal({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                swal(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                    )
-            } else if (result.dismiss === swal.DismissReason.cancel) {
-                swal('Cancelled', 'Your imaginary file is safe :)', 'error'
-                    )
-            }
-        })
-    }*/
-</script>
 @endsection
 

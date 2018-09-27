@@ -42,6 +42,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nom</th>
+                                    <th>Nombre de post</th>
                                     <th>Date de création</th>
                                     <th>Date de modification</th>
                                     <th>Action</th>
@@ -51,6 +52,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nom</th>
+                                    <th>Nombre de post</th>
                                     <th>Date de création</th>
                                     <th>Action</th>
                                 </tr>
@@ -61,6 +63,7 @@
                                     <tr>
                                         <td>{{ $key +1 * 40 }}</td>
                                         <td>{{ $category->name  }}</td>
+                                        <td>{{ $category->posts->count()  }}</td>
                                         <td>{{ $category->created_at }}</td>
                                         <td>{{ $category->updated_at }}</td>
                                         <td class="text-center">
@@ -70,7 +73,7 @@
                                             <form action="{{ route('admin.categories.destroy', [$category->id]) }}" method="POST">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
-                                                <button onclick="return alert('Etes vous sûr de vouloir supprimer ?')" type="submit" class="btn btn-danger waves-effect"> <i class="material-icons">delete</i>
+                                                <button onclick="return confirm('Etes vous sûr de vouloir supprimer ?')" type="submit" class="btn btn-danger waves-effect"> <i class="material-icons">delete</i>
 
                                                 </button>
                                             </form>
