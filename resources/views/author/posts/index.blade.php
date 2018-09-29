@@ -9,7 +9,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="block-header">
-        <a class="btn btn-primary btn-lg waves-effect" href="{{ route('admin.post.create') }}" title="">
+        <a class="btn btn-primary btn-lg waves-effect" href="{{ route('author.post.create') }}" title="">
             <i class="material-icons">add</i>
             <span>Ajout d'un nouveau post</span>
         </a>
@@ -95,13 +95,13 @@
                                         </th>
                                         <td>{{ $post->created_at }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.post.show', $post->id) }}" class="btn btn-info waves-effect">
+                                            <a href="{{ route('author.post.show', $post->id) }}" class="btn btn-info waves-effect">
                                                 <i class="material-icons">visibility</i>
                                             </a>
-                                            <a href="{{ route('admin.post.edit', $post->id) }}" class="btn btn-info waves-effect">
+                                            <a href="{{ route('author.post.edit', $post->id) }}" class="btn btn-info waves-effect">
                                                 <i class="material-icons">edit</i>
                                             </a>
-                                            <form action="{{ route('admin.post.destroy', [$post->id]) }}" method="POST">
+                                            <form action="{{ route('author.post.destroy', [$post->id]) }}" method="POST">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                                 <button onclick="return confirm('Etes vous sûr de vouloir supprimer ?')" type="submit" class="btn btn-danger waves-effect"> <i class="material-icons">delete</i>
@@ -114,7 +114,7 @@
                                 </tbody>
                             </tbody>
                         </table>
-                        {{ $posts->links() }}
+
                     </div>
                 </div>
             </div>

@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Author;
 
 use App\Category;
-use App\Notifications\NewAuthorPost;
 use App\Post;
 use App\Tag;
-use App\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -23,8 +21,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->paginate(10);
-        return view('admin.posts.index', compact('posts'));
+        $posts = Auth::User()->posts()->latest()->get();
+        return view('author.posts.index', compact('posts'));
     }
 
     /**
@@ -36,7 +34,7 @@ class PostController extends Controller
     {
         $tags = Tag::all();
         $categories = Category::all();
-        return view('admin.posts.create', compact('tags', 'categories'));
+        return view('author.posts.create', compact('tags', 'categories'));
     }
 
     /**
@@ -48,12 +46,12 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-         'title'  => 'required',
-         'image'  => 'required',
-         'categories'  => 'required',
-         'tags'  => 'required',
-         'body'  => 'required',
-     ]);
+            'title'  => 'required',
+            'image'  => 'required',
+            'categories'  => 'required',
+            'tags'  => 'required',
+            'body'  => 'required',
+        ]);
         $image = $request->file('image');
         $slug = str_slug($request->title);
         if($image){
@@ -81,53 +79,62 @@ class PostController extends Controller
         }else{
             $post->status = 0;
         }
-        $post->is_approved = true;
+        $post->is_approved = false;
         $post->save();
 
         $post->categories()->attach($request->categories);
         $post->tags()->attach($request->tags);
 
-        $users = User::where('role_id')->get();
-        Notification::send($users, new NewAuthorPost($post));
-
         Toastr::success('Le post a bien été sauvegarder', 'success');
-        return redirect()->route('admin.post.index');
+        return redirect()->route('author.post.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
     {
-
-        return view('admin.posts.show', compact('post'));
+        if($post->user_id != Auth::id()){
+            Toastr::error("Vous n'êtes pas authorisé a effectuer cet action", 'error');
+            return redirect()->back();
+        }
+        return view('author.posts.show', compact('post'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
     {
+        if($post->user_id != Auth::id()){
+            Toastr::error("Vous n'êtes pas authorisé a effectuer cet action", 'error');
+            return redirect()->back();
+        }
         $tags = Tag::all();
         $categories = Category::all();
-        return view('admin.posts.edit', compact('tags', 'categories','post'));
+        return view('author.posts.edit', compact('tags', 'categories','post'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
     {
+        if($post->user_id != Auth::id()){
+            Toastr::error("Vous n'êtes pas authorisé a effectuer cet action", 'error');
+            return redirect()->back();
+        }
+
         $this->validate($request, [
             'title'  => 'required',
             'image'  => 'image',
@@ -171,45 +178,28 @@ class PostController extends Controller
         }else{
             $post->status = 0;
         }
-        $post->is_approved = true;
+        $post->is_approved = false;
         $post->save();
 
         $post->categories()->sync($request->categories);
         $post->tags()->sync($request->tags);
 
         Toastr::success('Le post a bien été sauvegarder', 'success');
-        return redirect()->route('admin.post.index');
-    }
-
-    public function pending(){
-
-        $posts = Post::where('is_approved', false)->get();
-        return view('admin.posts.pending', compact('posts'));
-    }
-
-    public function approval($id){
-
-        $post = Post::find($id);
-        if($post->is_approved == false){
-
-            $post->is_approved = true;
-            $post->save();
-            Toastr::success('Post a bien ete mis en public', 'success');
-        }else{
-            Toastr::info('Ce post a déjà été approuvé');
-        }
-
-        return redirect()->back();
+        return redirect()->route('author.post.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
     {
+        if($post->user_id != Auth::id()){
+            Toastr::error("Vous n'êtes pas authorisé a effectuer cet action", 'error');
+            return redirect()->back();
+        }
 
         if(Storage::disk('public')->exists('posts/'.$post->image)){
             Storage::disk('public')->delete('posts/'.$post->image);

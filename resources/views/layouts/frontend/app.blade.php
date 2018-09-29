@@ -20,7 +20,7 @@
     <link href="{{ asset('assets/frontend/css/ionicons.css') }}" rel="stylesheet">
 
     <!-- Librairie Toast -->
-    <script src="{{ asset('assets/toast/toastr.min.css') }} "></script>
+    <link href="{{ asset('assets/toast/toastr.min.css') }}" rel="stylesheet" />
 
     @yield('css')
 </head>
@@ -42,9 +42,20 @@
 <script src="{{ asset('assets/frontend/js/scripts.js') }}"></script>
 
 @yield('js')
-
         <!-- Librairie Toast -->
 <script src="{{ asset('assets/toast/toastr.min.js') }} "></script>
 {!! Toastr::message() !!}
+        <!-- Librairie Toast -->
+@yield('js')
+<script type="text/javascript">
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            toastr.error('{{ $error }}}', 'Error', {
+                closeButton:true,
+                progessBar:true
+            });
+    @endforeach
+    @endif
+</script>
 </body>
 </html>
