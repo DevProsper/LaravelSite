@@ -87,9 +87,6 @@ class PostController extends Controller
         $post->categories()->attach($request->categories);
         $post->tags()->attach($request->tags);
 
-        $users = User::where('role_id')->get();
-        Notification::send($users, new NewAuthorPost($post));
-
         Toastr::success('Le post a bien été sauvegarder', 'success');
         return redirect()->route('admin.post.index');
     }

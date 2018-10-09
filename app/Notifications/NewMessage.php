@@ -2,25 +2,25 @@
 
 namespace App\Notifications;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class NewAuthorPost extends Notification
+class NewMessage extends Notification
 {
     use Queueable;
-
-    public $post;
+    public $fromUser;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($post)
+    public function __construct(User $user)
     {
-        $this->post = $post;
+        $this->fromUser = $user;
     }
 
     /**
@@ -42,14 +42,16 @@ class NewAuthorPost extends Notification
      */
     public function toMail($notifiable)
     {
+        $subject = sprintf('%s: You\'ve got a new message from %s!', config('app.name'), $this->fromUser->name);
+        $greeting = sprintf('Hello %s!', $notifiable->name);
+
         return (new MailMessage)
-                    ->greeting('Hello, Admin!')
-                    ->subject('Nouveaux post')
-                    ->line('Nouveau post'.$this->post->user->name. ' need to approve')
-                    ->line('Approuve ce post avec un click')
-                    ->line('Titre du post'.$this->post->title)
-                    ->action('View', url(route('admin.post.show', $this->post->id)))
-                    ->line('Thank you for using our application!');
+            ->subject($subject)
+            ->greeting($greeting)
+            ->salutation('Yours Faithfully')
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
