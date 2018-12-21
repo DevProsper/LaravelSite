@@ -151,68 +151,73 @@
 
     <section class="comment-section">
         <div class="container">
-            <h4><b>Commentaire</b></h4>
+            <h4><b>Commentez</b></h4>
             <div class="row">
 
                 <div class="col-lg-8 col-md-12">
-                    <div class="comment-form">
-                        <form method="post">
-                            <div class="row">
-
-                                <div class="col-sm-6">
-                                    <input type="text" aria-required="true" name="contact-form-name" class="form-control"
-                                           placeholder="Enter your name" aria-invalid="true" required >
-                                </div><!-- col-sm-6 -->
-                                <div class="col-sm-6">
-                                    <input type="email" aria-required="true" name="contact-form-email" class="form-control"
-                                           placeholder="Enter your email" aria-invalid="true" required>
-                                </div><!-- col-sm-6 -->
-
-                                <div class="col-sm-12">
-									<textarea name="contact-form-message" rows="2" class="text-area-messge form-control"
-                                              placeholder="Enter your comment" aria-required="true" aria-invalid="false"></textarea >
-                                </div><!-- col-sm-12 -->
-                                <div class="col-sm-12">
-                                    <button class="submit-btn" type="submit" id="form-submit"><b>POST COMMENT</b></button>
-                                </div><!-- col-sm-12 -->
-
-                            </div><!-- row -->
-                        </form>
-                    </div><!-- comment-form -->
-
-                    <h4><b>COMMENTS(12)</b></h4>
-
-                    <div class="commnets-area">
-
-                        <div class="comment">
-
-                            <div class="post-info">
-
-                                <div class="left-area">
-                                    <a class="avatar" href="#"><img src="images/avatar-1-120x120.jpg" alt="Profile Image"></a>
-                                </div>
-
-                                <div class="middle-area">
-                                    <a class="name" href="#"><b>Katy Liu</b></a>
-                                    <h6 class="date">on Sep 29, 2017 at 9:48 am</h6>
-                                </div>
-
-                                <div class="right-area">
-                                    <h5 class="reply-btn" ><a href="#"><b>REPLY</b></a></h5>
-                                </div>
-
-                            </div><!-- post-info -->
-
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur
-                                Ut enim ad minim veniam</p>
-
-                        </div>
-
-                    </div><!-- commnets-area -->
 
 
-                    <a class="more-comment-btn" href="#"><b>VIEW MORE COMMENTS</a>
+                        @guest
+                        <p>
+                            Pour commenter ce post, vous devez vous connecté
+                            <a href="{{ route('login') }}">Se connecter</a>
+                        </p>
+                        @else
+                        <div class="comment-form">
+                            <form method="post" action=" {{ route('comment.store', $post->id) }}">
+                                <div class="row">
+                                    @csrf
+                                    <div class="col-sm-12">
+									<textarea name="comment" rows="2" class="text-area-messge form-control"
+                                              placeholder="Ecrire un commentaire" aria-required="true" aria-invalid="false"></textarea >
+                                    </div><!-- col-sm-12 -->
+                                    <div class="col-sm-12">
+                                        <button class="submit-btn" type="submit" id="form-submit"><b>Commenter</b></button>
+                                    </div><!-- col-sm-12 -->
+
+                                </div><!-- row -->
+                            </form>
+                        </div><!-- comment-form -->
+                            @endguest
+
+
+                    <h4><b>Commentaires({{ $post->comments()->count() }})</b></h4>
+
+                    @if($post->comments()->count() > 0)
+                            @foreach($post->comments as $comment)
+                                <div class="commnets-area">
+
+                                    <div class="comment">
+
+                                        <div class="post-info">
+
+                                            <div class="left-area">
+                                                <a class="avatar" href="#"><img src="/storage/profile/{{ $comment->user->image }}" alt="Profile Image"></a>
+                                            </div>
+
+                                            <div class="middle-area">
+                                                <a class="name" href="#"><b>{{ $comment->user->name }}</b></a>
+                                                <h6 class="date">on {{ $comment->created_at->diffForHumans() }}</h6>
+                                            </div>
+
+                                            {{--<div class="right-area">
+                                                <h5 class="reply-btn" ><a href="#"><b>REPLY</b></a></h5>
+                                            </div>--}}
+
+                                        </div><!-- post-info -->
+
+                                        <p>{{ $comment->comment }}</p>
+
+                                    </div>
+
+                                </div><!-- commnets-area -->
+                            @endforeach
+                        @else
+                            Pas de commentaire pour ce post
+                        @endif
+
+
+
 
                 </div><!-- col-lg-8 col-md-12 -->
 
