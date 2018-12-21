@@ -3,7 +3,7 @@
     <!-- User Info -->
     <div class="user-info">
         <div class="image">
-            <img src="{{asset('assets/backend/images/user.png')}}" width="48" height="48" alt="User" />
+            <img src="/storage/profile/{{ Auth::user()->image }}" width="48" height="48" alt="User" />
         </div>
         <div class="info-container">
             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{Auth::user()->name}}</div>
@@ -70,6 +70,13 @@
                     </a>
                 </li>
 
+                <li class="{{ Request::is('admin/favorite') ? 'active' : '' }}">
+                    <a href="{{route('admin.favorite.index')}}">
+                        <i class="material-icons">favorite</i>
+                        <span>Favoris du post</span>
+                    </a>
+                </li>
+
                 <li class="{{ Request::is('admin/subscriber') ? 'active' : '' }}">
                     <a href="{{route('admin.subscriber.index')}}">
                         <i class="material-icons">subscriptions</i>
@@ -78,6 +85,13 @@
                 </li>
 
                 <li class="header">Systeme</li>
+
+                <li class="{{ Request::is('admin/settings') ? 'active' : '' }}">
+                    <a href="{{route('admin.settings')}}">
+                        <i class="material-icons">settings</i>
+                        <span>Parametres</span>
+                    </a>
+                </li>
                 <li>
                     <a class="dropdown-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
