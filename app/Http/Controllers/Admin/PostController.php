@@ -79,10 +79,11 @@ class PostController extends Controller
         $post->slug = $slug;
         $post->image = $image_name;
         $post->body = $request->body;
+
         if(isset($request->status)){
-            $post->status = 1;
+            $post->status = true;
         }else{
-            $post->status = 0;
+            $post->status = false;
         }
         $post->is_approved = true;
         $post->save();
@@ -173,9 +174,9 @@ class PostController extends Controller
         $post->image = $image_name;
         $post->body = $request->body;
         if(isset($request->status)){
-            $post->status = 1;
+            $post->status = true;
         }else{
-            $post->status = 0;
+            $post->status = false;
         }
         $post->is_approved = true;
         $post->save();
