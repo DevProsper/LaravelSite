@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -11,15 +12,15 @@ class PostController extends Controller
 
     public function index(){
 
-        $posts = Post::latest()->paginate(3);
+        $posts = Post::latest()->approved()->published()->paginate(3);
 
         return view('posts', compact('posts'));
     }
 
     public function details($slug){
 
-        $post = Post::where('slug', $slug)->first();
-        $postrandoms = Post::all()->random('3');
+        $post = Post::where('slug', $slug)->approved()->published()->first();
+        $postrandoms = Post::approved()->published()->take(3)->inRandomOrder()->get();
 
         $blog_key = 'blog_'. $post->id;
 
@@ -29,5 +30,13 @@ class PostController extends Controller
         }
 
         return view('post', compact('postrandoms', 'post'));
+    }
+
+    public function postByCategory($slug){
+
+        $categories = Category::where('slug', $slug)->first();
+        $posts = $categories->posts()->approved()->published()->get();
+
+        return view('categories', compact('categories','posts'));
     }
 }

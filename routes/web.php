@@ -15,8 +15,11 @@
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('post/{slug}', 'PostController@details')->name('post.details');
 Route::get('posts', 'PostController@index')->name('post.index');
+Route::get('/category/{slug}', 'PostController@postByCategory')->name('category.posts');
 
 Route::post('subscriber', 'SubscriberController@store')->name('subscriber.store');
+
+Route::get('/search', 'SearchController@search')->name('search');
 
 
 Auth::routes();
@@ -49,6 +52,10 @@ Route::group(['as'=>'admin.', 'prefix'=>'admin', 'namespace'=>'Admin', 'middlewa
 	Route::get('/favorite', 'FavoriteController@index')->name('favorite.index');
 
 
+	Route::get('comments', 	 'CommentController@index')->name('comment.index');
+	Route::delete('comments', 	 'CommentController@destroy')->name('comment.destroy');
+
+
 	Route::get('/subscriber', 	 'SubscriberController@index')->name('subscriber.index');
 	Route::delete('/subscriber/{subscriber}', 'SubscriberController@destroy')->name('subscriber.destroy');
 });
@@ -57,4 +64,10 @@ Route::group(['as'=>'author.', 'prefix'=>'author', 'namespace'=>'Author', 'middl
 
 	Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 	Route::resource('post', 'PostController');
+});
+
+
+View::composer('layouts.frontend.partials.footer', function($view){
+	$categories_f = \App\Category::all();
+	$view->with('categories_f', $categories_f);
 });

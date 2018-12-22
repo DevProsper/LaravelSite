@@ -77,6 +77,13 @@
                     </a>
                 </li>
 
+                <li class="{{ Request::is('admin/comments') ? 'active' : '' }}">
+                    <a href="{{route('admin.comment.index')}}">
+                        <i class="material-icons">comment</i>
+                        <span>Commentaires</span>
+                    </a>
+                </li>
+
                 <li class="{{ Request::is('admin/subscriber') ? 'active' : '' }}">
                     <a href="{{route('admin.subscriber.index')}}">
                         <i class="material-icons">subscriptions</i>

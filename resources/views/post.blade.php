@@ -101,7 +101,7 @@
                             <h4 class="title"><b>CATEGORIES</b></h4>
                             <ul>
                                 @foreach($post->categories as $category)
-                                    <li><a href="">{{ $category->name }}</a></li>
+                                    <li><a href="{{ route('category.posts', $category->slug) }}">{{ $category->name }}</a></li>
                                 @endforeach
                             </ul>
 
